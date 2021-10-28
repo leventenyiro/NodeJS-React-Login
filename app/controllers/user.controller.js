@@ -1,4 +1,5 @@
 const User = require("../models/user.model")
+const Password = require("../models/password.model")
 
 function message(req, msg) {
     let lang = "en"
@@ -26,6 +27,7 @@ function checkRegistration(req) {
         return languages[headerLang(req.headers["accept-language"])].passwordFormat
     else if (req.body.password != req.body.passwordAgain)
         return languages[headerLang(req.headers["accept-language"])].passwordsNotEqual
+}
 
 exports.reg = (req, res) => {
     // amit meg kell adni: username, email, password, passwordAgain
@@ -35,9 +37,26 @@ exports.reg = (req, res) => {
             error: message(req, checkReg)
         })
     else {
-        const user = new User({
-            username: req.body.username,
-            email: req.body.
+        Password.encrypt(req.body.password, (err, hashed) => {
+            const user = new User({
+                username: req.body.username,
+                email: req.body.email,
+                password: hashed,
+                emailVerified: "0",
+                image: "profile.png"
+            })
+
+            User.reg(user, (err) => {
+                console.log(err)
+                if (err)
+                    res.status(500).send({
+                        error: err
+                    })
+                else
+                    res.send({
+                        success: message(req, "successfulCreate")
+                    })
+            })
         })
     }
 }
