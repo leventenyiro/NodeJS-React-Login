@@ -10,5 +10,11 @@ const User = function(user) {
 }
 
 User.reg = (user, result) => {
-    
+    conn.query("INSERT INTO product SET ?", user, (err, res) => {
+        if (err)
+            return result(err, null)
+        return result(null)
+    })
 }
+
+module.exports = User
