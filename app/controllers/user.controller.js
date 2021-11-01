@@ -1,5 +1,6 @@
-const User = require("../models/user.model")
-const Password = require("../models/password.model")
+const User = require('../models/user.model')
+const Password = require('../models/password.model')
+const languages = require('../../languages.json')
 
 function message(req, msg) {
     let lang = "en"
@@ -16,10 +17,10 @@ function checkRegistration(req) {
         req.body.email          == undefined || req.body.email          == "" ||
         req.body.password       == undefined || req.body.password       == "" ||
         req.body.passwordAgain  == undefined || req.body.passwordAgain  == "")
-        return languages[headerLang(req.headers["accept-language"])].sthMissing
+        //return languages[headerLang(req.headers["accept-language"])].sthMissing
     else if (req.body.username.length < 6)
         return languages[headerLang(req.headers["accept-language"])].usernameMinLength
-    else if (!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(String(email).toLowerCase))
+    else if (!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(String(req.body.email).toLowerCase))
         return languages[headerLang(req.headers["accept-language"])].emailInvalid
     else if (req.body.password.length < 8)
         return languages[headerLang(req.headers["accept-language"])].passwordMinLength

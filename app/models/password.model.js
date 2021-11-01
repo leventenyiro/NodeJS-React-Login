@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
-/*const Password = function(password) {
+const Password = function(password) {
     this.password = password
-}*/
+}
 
 Password.encrypt = (password, result) => {
     bcrypt.hash(password, saltRounds, (err, hash) => {
